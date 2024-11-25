@@ -25,9 +25,11 @@ const CalculateNums = () => {
 
         const now = Date.now()
         const totalMiningTime = 6 * 60 * 60 * 1000
-        const elapsedTime = now - (miningStartTime.seconds * 1000)
+        const elapsedTime = now - miningStartTime
 
-        if (elapsedTime >= totalMiningTime.seconds * 1000) {
+        if (elapsedTime < 0) return 0
+
+        if (elapsedTime >= totalMiningTime) {
             setCanClaim(true)
             return 100
         }
@@ -44,7 +46,7 @@ const CalculateNums = () => {
 
         const now = Date.now()
         const totalMiningTime = 6 * 60 * 60 * 1000
-        const endTime = (miningStartTime.seconds * 1000) + totalMiningTime        
+        const endTime = miningStartTime + totalMiningTime        
         
         const remainingTime = Math.max(endTime-now, 0)
 

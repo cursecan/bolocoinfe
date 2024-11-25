@@ -25,38 +25,38 @@ const MiningButton = () => {
 
     return (
         <div className="">
-            {
-                user && calculate &&
-                    <div className='bg-gray-800 p-4 rounded-lg w-full'>
-                        <div className="flex justify-between items-center mb-2">
-                            <span className="text-white">
-                                {(user.isMining && 'Activated') || 'Deactivated'}
-                            </span>
-                            <div className="text-white">
-                                <span className="text-sm">
-                                    { formatNumber(user.mineRate)} B/s
-                                </span>
-                            </div>
-                        </div>
-                        <div className="flex justify-between items-center">
-                            <span>
-                                B { formatNumber(calculate.mined)}
-                            </span>
-                            <span>
-                                {String(calculate.remainingTime.hours).padStart(2,'0')}h{' '}
-                                {String(calculate.remainingTime.minutes).padStart(2,'0')}m{' '}
-                                {String(calculate.remainingTime.seconds).padStart(2,'0')}s
-                            </span>
-                        </div>
-                        {
-                            !user.isMining && !calculate.canClaim && (
-                                <button onClick={startFarming} className=' mt-6 w-full bg-blue-500 text-white'>
-                                    Start Mining
-                                </button>
-                            )
-                        }
+            <div className="">
+                <span>Balance: B {formatNumber(user.balance)}</span>
+            </div>
+            <div className='bg-gray-800 p-4 rounded-lg w-full'>
+                <div className="flex justify-between items-center mb-2">
+                    <span className="text-white">
+                        {(user.isMining && 'Activated') || 'Deactivated'}
+                    </span>
+                    <div className="text-white">
+                        <span className="text-sm">
+                            { formatNumber(user.mineRate)} B/s
+                        </span>
                     </div>
-            }
+                </div>
+                <div className="flex justify-between items-center">
+                    <span>
+                        B { formatNumber(calculate.mined)}
+                    </span>
+                    <span>
+                        {String(calculate.remainingTime.hours).padStart(2,'0')}h{' '}
+                        {String(calculate.remainingTime.minutes).padStart(2,'0')}m{' '}
+                        {String(calculate.remainingTime.seconds).padStart(2,'0')}s
+                    </span>
+                </div>
+                {
+                    !user.isMining && !calculate.canClaim && (
+                        <button onClick={startFarming} className=' mt-6 w-full bg-blue-500 text-white'>
+                            Start Mining
+                        </button>
+                    )
+                }
+            </div>
         </div>
     )
 }

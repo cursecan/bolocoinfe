@@ -17,6 +17,7 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectUser, setUser } from './stores/userSlice.js'
 import CalculateNums from './components/CalculateNums.jsx'
+import Loading from './pages/Loading.jsx'
 
 function App() {
 
@@ -49,17 +50,24 @@ function App() {
               isMining: docSnap.data().isMining,
               isPremium: docSnap.data().isPremium,
               mineRate: docSnap.data().mineRate,
-              miningStartDate: docSnap.data().miningStartDate,
+              miningStartDate: docSnap.data().miningStartDate ? 
+                docSnap.data().miningStartDate.toMillis() : null,
               languageCode: docSnap.data().languageCode
             })
           )
           console.log(docSnap.data());
         } else {
           await setDoc(doc(db, 'users', webApp.id), {
+            userid: webApp.id,
             firstName: webApp.firstName,
             lastName: webApp.lastName,
             username: webApp.username,
-            languageCode: webApp.languageCode    
+            languageCode: webApp.languageCode,
+            isMining: false,
+            balance: 0.0,
+            mineRate: 0.001,
+            miningStartDate: null,
+            isPremium: webApp.isPremium
           })
         }
       })
@@ -88,17 +96,19 @@ function App() {
         firstName: tg?.initDataUnsafe?.user?.first_name,
         lastName: tg?.initDataUnsafe?.user?.last_name,
         username: tg?.initDataUnsafe?.user?.username,
-        languageCode: tg?.initDataUnsafe?.user?.language_code
+        languageCode: tg?.initDataUnsafe?.user?.language_code,
+        isPremium: tg?.initDataUnsafe?.user?.is_premium
       })
 
       tg.expand()
     } else {
       setWebApp({
-        id: '126681118',
+        id: '12341234',
         firstName: 'Firstname',
         lastName: 'Lastname',
         username: '@username',
-        languageCode: 'en'
+        languageCode: 'en',
+        isPremium: false
       })
     }
 
@@ -121,6 +131,7 @@ function App() {
           </>
         )}
         <Routes>
+          <Route path='*' Component={Loading} />
           <Route path='/' Component={Home} />
           <Route path='/earning' Component={Earning} />
           <Route path='/friend' Component={Friends} />

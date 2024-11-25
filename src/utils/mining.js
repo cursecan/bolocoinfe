@@ -3,9 +3,11 @@ const calculateMineValue = (mineStartedTime, mineRate) => {
 
     const now = Date.now()
     const totalMiningTime = 6 * 60 * 60 * 1000  // set max 6 hours
-    let elapsedTime = now - (mineStartedTime.seconds * 1000)
+    let elapsedTime = now - mineStartedTime
 
     elapsedTime = Math.round(elapsedTime / 1000) * 1000
+
+    if (elapsedTime < 0) return 0
 
     if (elapsedTime >= totalMiningTime) {
         return mineRate * (totalMiningTime / 1000)
