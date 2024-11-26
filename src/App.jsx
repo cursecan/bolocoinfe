@@ -18,11 +18,21 @@ import { useDispatch, useSelector } from 'react-redux'
 import { selectUser, setUser } from './stores/userSlice.js'
 import CalculateNums from './components/CalculateNums.jsx'
 import Loading from './pages/Loading.jsx'
+import { selectCalculate } from './stores/calculateSlice.js'
+import { selectMessage, setMessage } from './stores/massageSlice.js'
+import CoinAnimation from './components/CoinAnimation.jsx'
+import { selectCoinshow } from './stores/coinshowSlice.js'
+import { ToastContainer, toast } from 'react-toastify'
+
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
 
   const dispatch = useDispatch()
   const user = useSelector(selectUser)
+  const calculate = useSelector(selectCalculate)
+  const message = useSelector(selectMessage)
+  const coinShow = useSelector(selectCoinshow)
   
   const [webApp, setWebApp] = useState()
 
@@ -114,6 +124,19 @@ function App() {
 
   }, [])
 
+  useEffect(() => {
+    const showToast = () => {
+      if (message?.text) {
+        toast(message.text)
+        dispatch(
+          setMessage(null)
+        )
+      }
+    }
+
+    showToast()
+  }, [message])
+
   
 
   return (
@@ -124,10 +147,18 @@ function App() {
           v7_relativeSplatPath: true,
         }}
       >
-        <ButtonNavigation />
+        {
+          (user && calculate) && <ButtonNavigation />
+        }
         {user && (
           <>
             <CalculateNums />
+            <ToastContainer
+              closeButton={() => false}
+              autoClose={2000}
+              toastClassName={() => `bg-gray-700 text-white relative px-5 py-3 rounded-b border-b-4 ${message.varian === 'info' ? 'border-blue-400' : 'border-gray-200'}`}
+            />
+            <CoinAnimation showAnimation={coinShow} />
           </>
         )}
         <Routes>
